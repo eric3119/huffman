@@ -2,47 +2,45 @@ NODE* criar_arvore(NODE *n1, NODE *n2){
 	NODE *novo = (NODE*) malloc(sizeof(NODE));
 	
 	novo->byte = '*';
-	if(n1 && n2)
-		novo->freq = n1->freq + n2->freq;
-	else if(n1)
-		novo->freq = n1->freq;
-	else if(n2)
-		novo->freq = n2->freq;
+	novo->freq = n1->freq + n2->freq;
 	novo->left = n1;
 	novo->right = n2;
-
-	//printf("%c %c\n", novo->left->byte, novo->right->byte);
+	novo->next = NULL;
 
 	return novo;
 }
 
-void enqueue_arvore(FILA *fila, NODE *n1, NODE *n2){
-	NODE *novo = criar_arvore(n1, n2), 
-		 *aux  = fila->head;
-
-	if(empty_queue(fila)){
-		fila->head = novo;
+void print_arvore(NODE *raiz){
+	if(raiz != NULL)
+	{
+		if(raiz->byte!='\n') printf("%c", raiz->byte);
+		else printf("\\n");
+		print_arvore(raiz->left);
+		print_arvore(raiz->right);
 	}
-	
+
 }
 
-FILA* inserir_arvore(FILA *f, NODE *n){
-	
-	NODE *ant = NULL, *atual = f->head;
-	
-	while(atual!= NULL && atual->freq < n->freq){
-		ant = atual;
-		atual = atual->next;
-	}
-	if(ant  == NULL){
-		n->next = f->head;
-		f->head = n;
-	}else if(atual == NULL){
-		ant->next = n;
-	}else{
-		n->next = atual;
-		ant->next = n;
-	}
+int is_empty(NODE *bt){
+	return (bt)? 0:1;
+}
 
-	return f;
+int height(NODE* bt){
+	
+	if(is_empty(bt->left) || is_empty(bt->right))
+	{
+		return 0;
+	}
+	int height_left, height_right;
+	height_left = height(bt->left);
+	height_right= height(bt->right);
+
+	if(height_left > height_right)
+	{
+		return 1 + height_left;
+	}
+	else
+	{
+		return 1 + height_right;
+	}
 }
