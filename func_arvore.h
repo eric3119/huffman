@@ -53,3 +53,24 @@ int height(NODE* bt){
 		return 1 + height_right;
 	}
 }
+
+int calc_tam_arvore(NODE* arvore)
+{
+	//O tamanho da arvore eh 1 + o tamanho da arvore da esuqerda + o tamanho da subarvore da direita
+	if((arvore->left == NULL)  && (arvore->right == NULL))
+	{
+		//o tamanho d euma folha eh 2, se a folha for '*' ou '\' , ou 1. 
+		if(arvore->caracter_controle == 1)
+		{
+			return 2;
+		}
+		else
+		{
+			return 1;
+		}
+	}
+	int tamanho;
+	tamanho = 1 + calc_tam_arvore(arvore->left);
+	tamanho+= calc_tam_arvore(arvore->right);
+	return tamanho;
+}
