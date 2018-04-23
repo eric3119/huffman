@@ -116,7 +116,6 @@ void cabecalho(int lixo, int tam_arvore, NODE* arvore, FILE* tmp)
 			byte2 = set_bit(byte2, i);
 		}
 		i--;
-		//printf("%c", tam_s[j]);
 		j++;
 	}
 
