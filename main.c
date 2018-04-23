@@ -41,6 +41,22 @@ void print_pre(NODE *n){
 	}
 }
 
+int calc_lixo(hash_table* ht, int tb_freq[])
+{
+	int i, temp, lixo;
+
+	for(i = 0, temp = 0; i < 256; i++)
+	{
+		if(tb_freq[i])
+		{
+			temp+= (strlen(ht->bytes[i]->byte) * tb_freq[i]);
+		}
+	}
+	lixo = (8 - temp%8)%8;
+	return lixo;
+}
+
+
 int main(int argc, char const *argv[]){
 
 	if(argc == 1){
@@ -54,7 +70,7 @@ int main(int argc, char const *argv[]){
 		puts("erro abrir arquivo");
 		return -1;
 	}
-	int i, tb_freq[256];
+	int i, tb_freq[256], lixo;
 	unsigned char c;
 	memset(tb_freq, 0, sizeof(tb_freq));
 
@@ -99,8 +115,9 @@ int main(int argc, char const *argv[]){
 	char* byte = (char*)malloc((tam+1)*sizeof(char));
 	
 	search(fila->head,byte,ht, 0);
+	lixo = calc_lixo(ht, tb_freq);
 	print_hash(ht);
-		
+	printf("lixo = %d", lixo);
 	comprimir(ht, argv[1]);
 	
 	return 0;
