@@ -13,6 +13,7 @@ typedef struct hash_table{
 typedef struct NODE{
 	unsigned char byte;
 	int freq;
+	short caracter_controle;
 	struct NODE *next;
 	struct NODE *left, *right;
 }NODE;

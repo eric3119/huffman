@@ -35,6 +35,10 @@ int calc_lixo(hash_table* ht, int tb_freq[])
 	lixo = (8 - temp%8)%8;
 	return lixo;
 }
+/*int calc_tam_arvore(NODE* arvore)
+{
+
+}*/
 
 void comprimir(hash_table *ht, const char *arquivo){
 
@@ -82,3 +86,7 @@ void comprimir(hash_table *ht, const char *arquivo){
 	fclose(antigo);
 }
 
+/*void cabecalho(int lixo, int tam_arvore, NODE* arvore)
+{
+
+}*/
