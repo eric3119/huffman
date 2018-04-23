@@ -72,9 +72,11 @@ int main(int argc, char const *argv[]){
 	for(i=0; i<256; i++){
 		if(tb_freq[i]){
 			NODE *novo = create_node(tb_freq[i],i);
+			printf("char de controle = %d byte: %c \\", novo->caracter_controle, novo->byte);
 			enqueue(fila, novo);
 		}
 	}
+	printf("\n");
 	
 	fclose(arquivo);
 	puts("fila:");
@@ -103,7 +105,7 @@ int main(int argc, char const *argv[]){
 	search(fila->head,byte,ht, 0);
 	lixo = calc_lixo(ht, tb_freq);
 	print_hash(ht);
-	printf("lixo = %d", lixo);
+	printf("\nlixo = %d\n", lixo);
 	comprimir(ht, argv[1]);
 	
 	return 0;

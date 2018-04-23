@@ -58,13 +58,13 @@ NODE* create_node(int freq, unsigned char c){
 		novo->byte = c;
 		novo->freq = freq;
 		novo->left = novo->right = novo->next = NULL;
-		if(c == 42 || c == 92)
+		if((c == 42) || (c == 92))
 		{
-			novo->caractere_controle = 1;
+			novo->caracter_controle = 1;
 		}
 		else
 		{
-			novo->caractere_controle = 0;
+			novo->caracter_controle = 0;
 		}
 	return novo;
 }

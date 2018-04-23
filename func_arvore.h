@@ -13,7 +13,16 @@ NODE* criar_arvore(NODE *n1, NODE *n2){
 void print_arvore(NODE *raiz){
 	if(raiz != NULL)
 	{
-		if(raiz->byte!='\n') printf("%c", raiz->byte);
+		if(raiz->byte!='\n')
+		{
+			if(raiz->caracter_controle == 1)
+			{
+				printf("\\%c", raiz->byte);
+			}else
+			{
+				printf("%c", raiz->byte);
+			}
+		} 
 		else printf("\\n");
 		print_arvore(raiz->left);
 		print_arvore(raiz->right);
