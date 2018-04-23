@@ -95,7 +95,7 @@ int main(int argc, char const *argv[]){
 		enqueue(fila, novo);		
 	}
 	puts("arvore:");
-	print_arvore(fila->head);puts("");
+	/*print_arvore(fila->head);*/puts("");
 	
 	hash_table* ht = criar_hash();
 
@@ -105,10 +105,11 @@ int main(int argc, char const *argv[]){
 	search(fila->head,byte,ht, 0);
 	lixo = calc_lixo(ht, tb_freq);
 	tam_arvore = calc_tam_arvore(fila->head);
+
 	print_hash(ht);
 
 	printf("\nlixo = %d tamanho da arvore = %d\n", lixo, tam_arvore);
-	comprimir(ht, argv[1]);
+	comprimir(ht, argv[1], lixo, tam_arvore, fila->head);
 	
 	return 0;
 }

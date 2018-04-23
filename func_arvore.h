@@ -10,7 +10,7 @@ NODE* criar_arvore(NODE *n1, NODE *n2){
 	return novo;
 }
 
-void print_arvore(NODE *raiz){
+/*void print_arvore(NODE *raiz){//printa na saída padrão
 	if(raiz != NULL)
 	{
 		if(raiz->byte!='\n')
@@ -27,7 +27,23 @@ void print_arvore(NODE *raiz){
 		print_arvore(raiz->left);
 		print_arvore(raiz->right);
 	}
+}*/
 
+void print_arvore(NODE *raiz, FILE* tmp){//printa no arquivo
+	if(raiz != NULL)
+	{
+		unsigned char c = raiz->byte;
+		if(raiz->caracter_controle == 1)
+		{
+			fprintf(tmp, "\\");
+			fwrite(&c, sizeof(c), 1, tmp);
+		}else
+		{
+			fwrite(&c, sizeof(c), 1, tmp);
+		}
+		print_arvore(raiz->left, tmp);
+		print_arvore(raiz->right, tmp);
+	}
 }
 
 int is_empty(NODE *bt){
