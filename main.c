@@ -99,13 +99,15 @@ int main(int argc, char const *argv[]){
 	
 	hash_table* ht = criar_hash();
 
-	int tam = height(fila->head);
+	int tam = height(fila->head), tam_arvore;
 	char* byte = (char*)malloc((tam+1)*sizeof(char));
 	
 	search(fila->head,byte,ht, 0);
 	lixo = calc_lixo(ht, tb_freq);
+	tam_arvore = calc_tam_arvore(fila->head);
 	print_hash(ht);
-	printf("\nlixo = %d\n", lixo);
+
+	printf("\nlixo = %d tamanho da arvore = %d\n", lixo, tam_arvore);
 	comprimir(ht, argv[1]);
 	
 	return 0;
