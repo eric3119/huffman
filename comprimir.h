@@ -21,6 +21,21 @@ void search(NODE* fila, char* byte, hash_table* ht, int i)
 
 }
 
+int calc_lixo(hash_table* ht, int tb_freq[])
+{
+	int i, temp, lixo;
+
+	for(i = 0, temp = 0; i < 256; i++)
+	{
+		if(tb_freq[i])
+		{
+			temp+= (strlen(ht->bytes[i]->byte) * tb_freq[i]);
+		}
+	}
+	lixo = (8 - temp%8)%8;
+	return lixo;
+}
+
 void comprimir(hash_table *ht, const char *arquivo){
 
 	FILE *tmp = fopen("tmp", "wb");	
