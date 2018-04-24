@@ -105,7 +105,7 @@ int main(int argc, char const *argv[]){
 	search(fila->head,byte,ht, 0);
 	lixo = calc_lixo(ht, tb_freq);
 	tam_arvore = calc_tam_arvore(fila->head);
-
+	
 	print_hash(ht);
 
 	printf("\nlixo = %d tamanho da arvore = %d\n", lixo, tam_arvore);

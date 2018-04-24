@@ -2,7 +2,14 @@ NODE* criar_arvore(NODE *n1, NODE *n2){
 	NODE *novo = (NODE*) malloc(sizeof(NODE));
 	
 	novo->byte = '*';
-	novo->freq = n1->freq + n2->freq;
+
+	if(n1 && n2)
+		novo->freq = n1->freq + n2->freq;
+	else if(n1)
+		novo->freq = n1->freq;
+	else
+		novo->freq = 0;
+
 	novo->left = n1;
 	novo->right = n2;
 	novo->next = NULL;
@@ -70,8 +77,9 @@ int height(NODE* bt){
 	}
 }
 
-int calc_tam_arvore(NODE* arvore)
-{
+int calc_tam_arvore(NODE* arvore){
+
+	if(!arvore) return 0;
 	//O tamanho da arvore eh 1 + o tamanho da arvore da esuqerda + o tamanho da subarvore da direita
 	if((arvore->left == NULL)  && (arvore->right == NULL))
 	{
