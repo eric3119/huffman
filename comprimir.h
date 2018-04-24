@@ -3,8 +3,10 @@ unsigned char set_bit(unsigned char c, int i){
 	unsigned char mask = 1 << i;
 	return mask | c;
 }
-void search(NODE* fila, char* byte, hash_table* ht, int i)
-{
+void search(NODE* fila, char* byte, hash_table* ht, int i){
+
+	if(!fila) return;
+
 	if(fila->left == NULL && fila->right == NULL)
 	{
 		byte[i] = '\0';
@@ -140,7 +142,8 @@ void comprimir(hash_table *ht, const char *arquivo, int lixo, int tam_arvore, NO
 		return ;
 	}
 	fread(&c, sizeof(c), 1, antigo);
-	tamanho = strlen(ht->bytes[c]->byte);
+	if(!feof(antigo))
+		tamanho = strlen(ht->bytes[c]->byte);
 		
 	while(!feof(antigo)){
 
