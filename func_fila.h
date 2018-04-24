@@ -13,7 +13,7 @@ int empty_queue(FILA *fila){
 }
 
 NODE* dequeue(FILA *fila){
-	
+
 	if(empty_queue(fila)) return NULL;
 	
 	NODE *aux = fila->head;
