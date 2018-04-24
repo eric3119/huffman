@@ -165,7 +165,7 @@ void comprimir(hash_table *ht, const char *arquivo, int lixo, int tam_arvore, NO
 
 		}
 
-		if(feof(antigo)){
+		if(feof(antigo) && (i>=0)){
 			tamanho = strlen(ht->bytes[c]->byte);
 			printf("ultimo %u ", d);
 			fwrite(&d, sizeof(d), 1, tmp);
