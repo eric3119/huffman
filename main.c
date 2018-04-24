@@ -13,6 +13,7 @@ typedef struct hash_table{
 typedef struct NODE{
 	unsigned char byte;
 	int freq;
+	short caracter_controle;
 	struct NODE *next;
 	struct NODE *left, *right;
 }NODE;
@@ -39,21 +40,6 @@ void print_pre(NODE *n){
 		print_pre(n->left);
 		print_pre(n->right);
 	}
-}
-
-int calc_lixo(hash_table* ht, int tb_freq[])
-{
-	int i, temp, lixo;
-
-	for(i = 0, temp = 0; i < 256; i++)
-	{
-		if(tb_freq[i])
-		{
-			temp+= (strlen(ht->bytes[i]->byte) * tb_freq[i]);
-		}
-	}
-	lixo = (8 - temp%8)%8;
-	return lixo;
 }
 
 
@@ -86,9 +72,11 @@ int main(int argc, char const *argv[]){
 	for(i=0; i<256; i++){
 		if(tb_freq[i]){
 			NODE *novo = create_node(tb_freq[i],i);
+			printf("char de controle = %d byte: %c \\", novo->caracter_controle, novo->byte);
 			enqueue(fila, novo);
 		}
 	}
+	printf("\n");
 	
 	fclose(arquivo);
 	puts("fila:");
@@ -107,18 +95,21 @@ int main(int argc, char const *argv[]){
 		enqueue(fila, novo);		
 	}
 	puts("arvore:");
-	print_arvore(fila->head);puts("");
+	/*print_arvore(fila->head);*/puts("");
 	
 	hash_table* ht = criar_hash();
 
-	int tam = height(fila->head);
+	int tam = height(fila->head), tam_arvore;
 	char* byte = (char*)malloc((tam+1)*sizeof(char));
 	
 	search(fila->head,byte,ht, 0);
 	lixo = calc_lixo(ht, tb_freq);
+	tam_arvore = calc_tam_arvore(fila->head);
+	
 	print_hash(ht);
-	printf("lixo = %d", lixo);
-	comprimir(ht, argv[1]);
+
+	printf("\nlixo = %d tamanho da arvore = %d\n", lixo, tam_arvore);
+	comprimir(ht, argv[1], lixo, tam_arvore, fila->head);
 	
 	return 0;
 }

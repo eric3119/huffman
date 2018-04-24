@@ -13,7 +13,7 @@ int empty_queue(FILA *fila){
 }
 
 NODE* dequeue(FILA *fila){
-	
+
 	if(empty_queue(fila)) return NULL;
 	
 	NODE *aux = fila->head;
@@ -58,6 +58,13 @@ NODE* create_node(int freq, unsigned char c){
 		novo->byte = c;
 		novo->freq = freq;
 		novo->left = novo->right = novo->next = NULL;
-
+		if((c == 42) || (c == 92))
+		{
+			novo->caracter_controle = 1;
+		}
+		else
+		{
+			novo->caracter_controle = 0;
+		}
 	return novo;
 }
