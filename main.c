@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 typedef struct {
 	char* byte;
@@ -26,6 +27,7 @@ typedef struct FILA{
 #include "func_arvore.h"
 #include "hash.h"
 #include "comprimir.h"
+#include "descomprimir.h"
 
 void print(NODE *p){
 	if(!p) return;
@@ -95,7 +97,7 @@ int main(int argc, char const *argv[]){
 		enqueue(fila, novo);		
 	}
 	puts("arvore:");
-	/*print_arvore(fila->head);*/puts("");
+	mostrar_arvore(fila->head);puts("");
 	
 	hash_table* ht = criar_hash();
 
@@ -105,11 +107,21 @@ int main(int argc, char const *argv[]){
 	search(fila->head,byte,ht, 0);
 	lixo = calc_lixo(ht, tb_freq);
 	tam_arvore = calc_tam_arvore(fila->head);
-	
+
 	print_hash(ht);
 
 	printf("\nlixo = %d tamanho da arvore = %d\n", lixo, tam_arvore);
 	comprimir(ht, argv[1], lixo, tam_arvore, fila->head);
+
+
+	NODE *arvore = descomprimir(&lixo, &tam_arvore);
+	ht = criar_hash();
+	byte = (char*)malloc((tam+1)*sizeof(char));
+	search(arvore,byte,ht, 0);
+	print_hash(ht);
+
+	printf("%d %d\n", lixo, tam_arvore);
+
 	
 	return 0;
 }
