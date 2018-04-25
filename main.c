@@ -122,8 +122,6 @@ int main(int argc, char const *argv[]){
 
 	printf("%d %d\n", lixo, tam_arvore);
 
-	mostrar_arvore(arvore);
-
 	
 	return 0;
 }

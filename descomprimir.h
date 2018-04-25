@@ -98,6 +98,8 @@ NODE* descomprimir(int *tam_lixo, int *tam_arvore){
 
 	i = 0;
 	arvore = criar_arv(arvore, &i, tam_arvore, compr);
-		
+	
+	mostrar_arvore(arvore);puts("");
+
 	return arvore;
 }
