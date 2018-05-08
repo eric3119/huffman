@@ -30,6 +30,7 @@ int conv_tam_lixo(unsigned char c){
 	return bin_to_int(bin, 3);
 }
 
+//Nao funciona desse jeito :/
 int conv_tam_arv(unsigned char c, int tam){
 	int bin[tam], i = tam-1, j=tam-1;
 
@@ -46,7 +47,24 @@ int conv_tam_arv(unsigned char c, int tam){
 
 	return bin_to_int(bin, tam);
 }
+//:(
 
+void string_tam(unsigned char c, int* string, int pos_byte, int pos_string)
+{
+	while(pos_byte>= 0)
+	{
+		if(is_bit_i_set(c, pos_byte))
+		{
+			string[pos_string] = 1;
+		}
+		else
+		{
+			string[pos_string] = 0;
+		}
+		pos_byte--;
+		pos_string++;
+	}
+}
 NODE* criar_no_arv(unsigned char c){
 	
 	NODE *novo = (NODE*) malloc(sizeof(NODE));
@@ -85,17 +103,16 @@ NODE* descomprimir(int *tam_lixo, int *tam_arvore){
 	FILE *compr = fopen("tmp", "rb");
 	unsigned char c = 0;
 	NODE *arvore = NULL;
-	int i;
+	int i, *tam_arv = (int*)malloc(13*sizeof(int));
 
 	fread(&c, sizeof(c), 1, compr);
 
 	*tam_lixo = conv_tam_lixo(c);
-	*tam_arvore = conv_tam_arv(c, 5);
+	string_tam(c, tam_arv, 4, 0);
 
 	fread(&c, sizeof(c), 1, compr);
-		*tam_arvore += conv_tam_arv(c, 8);
-
-
+	string_tam(c, tam_arv, 7, 4);
+	*tam_arvore = bin_to_int(tam_arv, 13);
 	i = 0;
 	arvore = criar_arv(arvore, &i, tam_arvore, compr);
 	
