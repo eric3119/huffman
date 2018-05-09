@@ -98,6 +98,39 @@ NODE* criar_arv(NODE* bt, int *i, int* tam, FILE *compr){
 	return bt;
 }
 
+void descompressao(int tam_lixo, unsigned char c, int indice,NODE* raiz,
+ NODE* arvore, FILE* arquivo_comp, FILE* arquivo_descomp)
+{
+
+	if(indice < 0)
+	{
+		fread(&c, sizeof(c), 1, arquivo_comp);
+		if(feof(arquivo_comp))
+		{
+			return;
+		}
+		descompressao(tam_lixo, c, 7, raiz, arvore, arquivo_comp, arquivo_descomp);
+		return;
+	}
+	if((arvore!= NULL) &&(arvore->left == NULL) && (arvore->right == NULL) )
+	{
+		unsigned char d = arvore->byte;
+		fwrite(&d, sizeof(d), 1, arquivo_descomp);
+		descompressao(tam_lixo, c, indice, raiz, raiz, arquivo_comp, arquivo_descomp);
+		return;
+	}
+	if(is_bit_i_set(c, indice))
+	{
+		descompressao(tam_lixo, c, indice-1, raiz, arvore->right, arquivo_comp, arquivo_descomp);
+		return;
+	}
+	else
+	{
+		descompressao(tam_lixo, c, indice-1, raiz, arvore->left, arquivo_comp, arquivo_descomp);
+		return;
+	}
+}
+
 NODE* descomprimir(int *tam_lixo, int *tam_arvore){
 	
 	FILE *compr = fopen("tmp", "rb");
@@ -117,6 +150,10 @@ NODE* descomprimir(int *tam_lixo, int *tam_arvore){
 	arvore = criar_arv(arvore, &i, tam_arvore, compr);
 	
 	mostrar_arvore(arvore);puts("");
+	FILE* descomprimido = fopen("descomprimido", "wb"); 
+	fread(&c, sizeof(c), 1, compr);
+	descompressao(*tam_lixo, c, 7, arvore, arvore, compr, descomprimido);
+	fclose(descomprimido);
 
 	return arvore;
 }
