@@ -17,24 +17,16 @@ NODE* criar_arvore(NODE *n1, NODE *n2){
 	return novo;
 }
 
-/*void print_arvore(NODE *raiz){//printa na saída padrão
-	if(raiz != NULL)
-	{
-		if(raiz->byte!='\n')
-		{
-			if(raiz->caracter_controle == 1)
-			{
-				printf("\\%c", raiz->byte);
-			}else
-			{
-				printf("%c", raiz->byte);
-			}
-		} 
-		else printf("\\n");
-		print_arvore(raiz->left);
-		print_arvore(raiz->right);
+void mostrar_arvore(NODE *raiz){//printa na saída padrão
+	if(raiz != NULL){
+		if(raiz->caracter_controle == 1)
+			printf("\\%c", raiz->byte);
+		else
+			printf("%c", raiz->byte);
+		mostrar_arvore(raiz->left);
+		mostrar_arvore(raiz->right);
 	}
-}*/
+}
 
 void print_arvore(NODE *raiz, FILE* tmp){//printa no arquivo
 	if(raiz != NULL)
@@ -42,7 +34,8 @@ void print_arvore(NODE *raiz, FILE* tmp){//printa no arquivo
 		unsigned char c = raiz->byte;
 		if(raiz->caracter_controle == 1)
 		{
-			fprintf(tmp, "\\");
+			unsigned char d = 92;
+			fwrite(&d, sizeof(d), 1, tmp);
 			fwrite(&c, sizeof(c), 1, tmp);
 		}else
 		{
