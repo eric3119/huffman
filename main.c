@@ -52,8 +52,6 @@ int main(int argc, char const *argv[]){
 		return 0;
 	}
 
-	
-
 	if(strcmp(argv[2], "comprimir") == 0)
 	{
 		FILE *arquivo = fopen(argv[1], "rb");
@@ -115,21 +113,10 @@ int main(int argc, char const *argv[]){
 
 		printf("\nlixo = %d tamanho da arvore = %d\n", lixo, tam_arvore);
 		comprimir(ht, argv[1], lixo, tam_arvore, fila->head);
-
-
-		NODE *arvore = descomprimir(&lixo, &tam_arvore);
-		ht = criar_hash();
-		byte = (char*)malloc((tam+1)*sizeof(char));
-		search(arvore,byte,ht, 0);
-		print_hash(ht);
-
-		printf("%d %d\n", lixo, tam_arvore);
 	}
 	else
 	{
-		int tam_lixo, tam_arvore;
-		NODE* arvore;
-		arvore = descomprimir(&tam_lixo, &tam_arvore);
+		descomprimir();
 	}
 	return 0;
 }

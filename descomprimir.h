@@ -3,13 +3,18 @@ int is_bit_i_set(unsigned char c, int i){
 	return mask & c;
 }
 
-int bin_to_int(int *bin, int tam){
-	int i = 0, saida = 0;
-	
-	while(i<tam){
-		saida += bin[i]*pow(2, i);
-		i++;
+int bin_to_int(int bin[], int tam){
+	int i = tam-1, saida = 0, j = 0;
+	while(i >= 0){
+		if(bin[i]== 1)
+		{
+			double potencia = pow(2.0, (double)j);
+			saida += ((bin[i])*potencia);
+		}
+		i--;
+		j++;
 	}
+	
 	return saida;
 }
 
@@ -75,8 +80,8 @@ NODE* criar_no_arv(unsigned char c){
 	return novo;
 }
 
-NODE* criar_arv(NODE* bt, int *i, int* tam, FILE *compr){
-	if(*i == *tam) return bt;
+NODE* criar_arv(NODE* bt, int *i, int tam, FILE *compr){
+	if(*i == tam) return bt;
 	(*i)++;
 	unsigned char item;
 	
@@ -97,63 +102,107 @@ NODE* criar_arv(NODE* bt, int *i, int* tam, FILE *compr){
 
 	return bt;
 }
-
-void descompressao(int tam_lixo, unsigned char c, int indice,NODE* raiz,
- NODE* arvore, FILE* arquivo_comp, FILE* arquivo_descomp)
+void descompressao(NODE* raiz, NODE* arvore, unsigned char c, unsigned char ultimo, int tam_lixo, 
+	int indice, int pos_atual, int pos_final, FILE* arq_comp, FILE* arq_descomp)
 {
-
-	if(indice < 0)
-	{
-		fread(&c, sizeof(c), 1, arquivo_comp);
-		if(feof(arquivo_comp))
-		{
-			return;
-		}
-		descompressao(tam_lixo, c, 7, raiz, arvore, arquivo_comp, arquivo_descomp);
-		return;
-	}
-	if((arvore!= NULL) &&(arvore->left == NULL) && (arvore->right == NULL) )
+	if((arvore->left == NULL) && (arvore->right == NULL))
 	{
 		unsigned char d = arvore->byte;
-		fwrite(&d, sizeof(d), 1, arquivo_descomp);
-		descompressao(tam_lixo, c, indice, raiz, raiz, arquivo_comp, arquivo_descomp);
+		fwrite(&d, sizeof(d), 1, arq_descomp);
+		descompressao(raiz, raiz, c, ultimo, tam_lixo, indice, pos_atual, pos_final, arq_comp, arq_descomp);
 		return;
 	}
-	if(is_bit_i_set(c, indice))
+	else if(pos_atual > pos_final)
 	{
-		descompressao(tam_lixo, c, indice-1, raiz, arvore->right, arquivo_comp, arquivo_descomp);
+		if(pos_atual == pos_final+1)
+		{
+			indice = 7;
+			pos_atual = pos_final+3;
+		}
+		else if(indice >= tam_lixo)
+		{
+			if(is_bit_i_set(ultimo, indice))
+			{
+				indice--;
+				descompressao(raiz, arvore->right, c, ultimo, tam_lixo, indice, pos_atual, pos_final, arq_comp, arq_descomp);
+				return;
+			}
+			else
+			{
+				(indice)--;
+				descompressao(raiz, arvore->left, c, ultimo, tam_lixo, indice, pos_atual, pos_final, arq_comp, arq_descomp);
+				return;
+			}
+		}
+	}
+	else if((indice < 0))
+	{
+			indice = 7;
+			fread(&c, sizeof(c), 1, arq_comp);
+			descompressao(raiz, arvore, c, ultimo, tam_lixo, indice, pos_atual+1, pos_final, arq_comp, arq_descomp);
+			return;
+	}
+	else if(is_bit_i_set(c, indice))
+	{
+		indice --;
+		descompressao(raiz, arvore->right, c, ultimo, tam_lixo, indice, pos_atual, pos_final, arq_comp, arq_descomp);
 		return;
 	}
 	else
 	{
-		descompressao(tam_lixo, c, indice-1, raiz, arvore->left, arquivo_comp, arquivo_descomp);
+		indice--;
+		descompressao(raiz, arvore->left, c, ultimo, tam_lixo, indice, pos_atual, pos_final, arq_comp, arq_descomp);
 		return;
 	}
 }
-
-NODE* descomprimir(int *tam_lixo, int *tam_arvore){
+void descomprimir(){
+	
+	int i, *tam_arv = (int*)malloc(13*sizeof(int)), tam_arquivo;
+	int tam_lixo, tam_arvore;
+	unsigned char c = 0, ultimo;
 	
 	FILE *compr = fopen("tmp", "rb");
-	unsigned char c = 0;
-	NODE *arvore = NULL;
-	int i, *tam_arv = (int*)malloc(13*sizeof(int));
+	NODE *arvore = NULL, *raiz;
+
+	fpos_t pos;
 
 	fread(&c, sizeof(c), 1, compr);
 
-	*tam_lixo = conv_tam_lixo(c);
+	tam_lixo = conv_tam_lixo(c);
 	string_tam(c, tam_arv, 4, 0);
 
 	fread(&c, sizeof(c), 1, compr);
-	string_tam(c, tam_arv, 7, 4);
-	*tam_arvore = bin_to_int(tam_arv, 13);
+	string_tam(c, tam_arv, 7, 5);
+	for(i = 0; i < 13; i++)
+	{
+		printf("%d", tam_arv[i]);
+	}
+	tam_arvore = bin_to_int(tam_arv, 13);
+
 	i = 0;
 	arvore = criar_arv(arvore, &i, tam_arvore, compr);
 	
 	mostrar_arvore(arvore);puts("");
-	FILE* descomprimido = fopen("descomprimido", "wb"); 
-	fread(&c, sizeof(c), 1, compr);
-	descompressao(*tam_lixo, c, 7, arvore, arvore, compr, descomprimido);
-	fclose(descomprimido);
+	raiz = arvore;
+	fgetpos(compr, &pos);
+	/*Nessa parte ele calcula o tamanho do arquivo*/
+	fseek(compr, 1, SEEK_SET);//Volta pro inicio do arquivo
+	tam_arquivo = 0;
+	while(!feof(compr))
+	{
+		tam_arquivo++;
+		fread(&c, sizeof(c), 1, compr);
+	}
 
-	return arvore;
+	fseek(compr, tam_arquivo, SEEK_SET);
+	fread(&ultimo, sizeof(ultimo), 1, compr);//Leu o último byte antes do eof
+
+	fsetpos(compr, &pos);//Volta pra posição depois da arvore
+
+	/*FIM*/
+	FILE* descomprimido = fopen("descomprimido", "wb");
+	fread(&c, sizeof(c), 1, compr);
+	printf("pos_atual = %d, pos_final = %d", 3+tam_arvore, tam_arquivo-1);
+	descompressao(raiz, arvore, c, ultimo, tam_lixo, 7, 3+tam_arvore, tam_arquivo-1, compr, descomprimido);
+	fclose(descomprimido);
 }
