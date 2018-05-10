@@ -105,55 +105,55 @@ NODE* criar_arv(NODE* bt, int *i, int tam, FILE *compr){
 void descompressao(NODE* raiz, NODE* arvore, unsigned char c, unsigned char ultimo, int tam_lixo, 
 	int indice, int pos_atual, int pos_final, FILE* arq_comp, FILE* arq_descomp)
 {
-	if((arvore->left == NULL) && (arvore->right == NULL))
+	while(pos_atual < pos_final)
 	{
-		unsigned char d = arvore->byte;
-		fwrite(&d, sizeof(d), 1, arq_descomp);
-		descompressao(raiz, raiz, c, ultimo, tam_lixo, indice, pos_atual, pos_final, arq_comp, arq_descomp);
-		return;
-	}
-	else if(pos_atual > pos_final)
-	{
-		if(pos_atual == pos_final+1)
+		if((arvore->left == NULL) && (arvore->right == NULL))
 		{
-			indice = 7;
-			pos_atual = pos_final+3;
+			unsigned char d = arvore->byte;
+			fwrite(&d, sizeof(d), 1, arq_descomp);
+			arvore = raiz;
 		}
-		else if(indice >= tam_lixo)
+		else if((indice < 0))
 		{
-			if(is_bit_i_set(ultimo, indice))
-			{
-				indice--;
-				descompressao(raiz, arvore->right, c, ultimo, tam_lixo, indice, pos_atual, pos_final, arq_comp, arq_descomp);
-				return;
-			}
-			else
-			{
-				(indice)--;
-				descompressao(raiz, arvore->left, c, ultimo, tam_lixo, indice, pos_atual, pos_final, arq_comp, arq_descomp);
-				return;
-			}
+				indice = 7;
+				fread(&c, sizeof(c), 1, arq_comp);
+				pos_atual+=1;
+		}
+		else if(is_bit_i_set(c, indice))
+		{
+			indice --;
+			arvore = arvore->right;
+		}
+		else
+		{
+			indice--;
+			arvore = arvore->left;
 		}
 	}
-	else if((indice < 0))
+	indice = 7;
+
+	while(indice >= tam_lixo)
 	{
-			indice = 7;
-			fread(&c, sizeof(c), 1, arq_comp);
-			descompressao(raiz, arvore, c, ultimo, tam_lixo, indice, pos_atual+1, pos_final, arq_comp, arq_descomp);
-			return;
+		if((arvore->left == NULL) && (arvore->right == NULL))
+		{
+			unsigned char d = arvore->byte;
+			fwrite(&d, sizeof(d), 1, arq_descomp);
+			arvore = raiz;
+		}
+		if(is_bit_i_set(ultimo, indice))
+		{
+			indice--;
+			arvore = arvore->right;
+		}
+		else
+		{
+			(indice)--;
+			arvore = arvore->left;
+		}
 	}
-	else if(is_bit_i_set(c, indice))
-	{
-		indice --;
-		descompressao(raiz, arvore->right, c, ultimo, tam_lixo, indice, pos_atual, pos_final, arq_comp, arq_descomp);
-		return;
-	}
-	else
-	{
-		indice--;
-		descompressao(raiz, arvore->left, c, ultimo, tam_lixo, indice, pos_atual, pos_final, arq_comp, arq_descomp);
-		return;
-	}
+	
+
+
 }
 void descomprimir(){
 	
