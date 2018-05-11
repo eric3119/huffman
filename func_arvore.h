@@ -34,7 +34,8 @@ void print_arvore(NODE *raiz, FILE* tmp){//printa no arquivo
 		unsigned char c = raiz->byte;
 		if(raiz->caracter_controle == 1)
 		{
-			fprintf(tmp, "\\");
+			unsigned char d = 92;
+			fwrite(&d, sizeof(d), 1, tmp);
 			fwrite(&c, sizeof(c), 1, tmp);
 		}else
 		{

@@ -84,7 +84,6 @@ void cabecalho(int lixo, int tam_arvore, NODE* arvore, FILE* tmp)
 		}
 		strcpy(tam_s, tam_s2);
 	}
-
 	/*Setando os bits*/
 	//setando o tamanho do lixo
 	for(i = 7, j = 0; i >= 5;)
