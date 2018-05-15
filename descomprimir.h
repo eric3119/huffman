@@ -102,10 +102,37 @@ NODE* criar_arv(NODE* bt, int *i, int tam, FILE *compr){
 
 	return bt;
 }
-void descompressao(NODE* raiz, NODE* arvore, unsigned char c, unsigned char ultimo, int tam_lixo, 
-	int indice, int pos_atual, int pos_final, FILE* arq_comp, FILE* arq_descomp)
+void descompressao(NODE* arvore,int tam_arvore,  int tam_lixo, FILE* arq_comp)
 {
-	while(pos_atual < pos_final)
+	int indice = 7, pos_atual, pos_final, tam_arquivo;
+	unsigned char c, ultimo;
+	
+	NODE* raiz = arvore;
+	 FILE* arq_descomp = fopen("descomprimido", "wb");
+	fpos_t pos;
+
+	fgetpos(arq_comp, &pos);
+	/*Nessa parte ele calcula o tamanho do arquivo*/
+	fseek(arq_comp, 0, SEEK_SET);//Volta pro inicio do arquivo
+	tam_arquivo = 0;
+	while(!feof(arq_comp))
+	{
+		tam_arquivo++;
+		fread(&c, sizeof(c), 1, arq_comp);
+	}
+
+	fseek(arq_comp, tam_arquivo, SEEK_SET);
+	fread(&ultimo, sizeof(ultimo), 1, arq_comp);//Leu o último byte antes do eof
+
+	fsetpos(arq_comp, &pos);//Volta pra posição depois da arvore
+
+	pos_atual = 3 + tam_arvore;
+	pos_final = tam_arquivo; 
+	/*FIM*/
+
+	fread(&c, sizeof(c), 1, arq_comp);
+
+	while(pos_atual < pos_final-1)
 	{
 		if((arvore->left == NULL) && (arvore->right == NULL))
 		{
@@ -130,6 +157,7 @@ void descompressao(NODE* raiz, NODE* arvore, unsigned char c, unsigned char ulti
 			arvore = arvore->left;
 		}
 	}
+
 	indice = 7;
 
 	while(indice >= tam_lixo)
@@ -151,20 +179,15 @@ void descompressao(NODE* raiz, NODE* arvore, unsigned char c, unsigned char ulti
 			arvore = arvore->left;
 		}
 	}
-	
-
-
+	fclose(arq_descomp);
 }
-void descomprimir(){
+void descomprimir(FILE* compr){
 	
 	int i, *tam_arv = (int*)malloc(13*sizeof(int)), tam_arquivo;
 	int tam_lixo, tam_arvore;
-	unsigned char c = 0, ultimo;
-	
-	FILE *compr = fopen("tmp", "rb");
-	NODE *arvore = NULL, *raiz;
+	unsigned char c = 0;
 
-	fpos_t pos;
+	NODE *arvore = NULL;
 
 	fread(&c, sizeof(c), 1, compr);
 
@@ -183,26 +206,6 @@ void descomprimir(){
 	arvore = criar_arv(arvore, &i, tam_arvore, compr);
 	
 	mostrar_arvore(arvore);puts("");
-	raiz = arvore;
-	fgetpos(compr, &pos);
-	/*Nessa parte ele calcula o tamanho do arquivo*/
-	fseek(compr, 1, SEEK_SET);//Volta pro inicio do arquivo
-	tam_arquivo = 0;
-	while(!feof(compr))
-	{
-		tam_arquivo++;
-		fread(&c, sizeof(c), 1, compr);
-	}
 
-	fseek(compr, tam_arquivo, SEEK_SET);
-	fread(&ultimo, sizeof(ultimo), 1, compr);//Leu o último byte antes do eof
-
-	fsetpos(compr, &pos);//Volta pra posição depois da arvore
-
-	/*FIM*/
-	FILE* descomprimido = fopen("descomprimido", "wb");
-	fread(&c, sizeof(c), 1, compr);
-	printf("pos_atual = %d, pos_final = %d", 3+tam_arvore, tam_arquivo-1);
-	descompressao(raiz, arvore, c, ultimo, tam_lixo, 7, 3+tam_arvore, tam_arquivo-1, compr, descomprimido);
-	fclose(descomprimido);
+	descompressao(arvore, tam_arvore, tam_lixo,compr);
 }

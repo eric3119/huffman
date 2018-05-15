@@ -116,7 +116,8 @@ int main(int argc, char const *argv[]){
 	}
 	else
 	{
-		descomprimir();
+		FILE* file = fopen(argv[1], "rb");
+		descomprimir(file);
 	}
 	return 0;
 }
