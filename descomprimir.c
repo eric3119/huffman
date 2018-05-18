@@ -59,14 +59,13 @@ void descomprimir(FILE* compr)
 	unsigned short indice = 0;
 	
 	fread(&byte, sizeof(byte), 1, compr);
-	cabecalho = byte<<8;
-	fread(&byte, sizeof(byte), 1, compr);
-	cabecalho = cabecalho | (byte<<8)>>8;
-	printf("%hu\n", cabecalho);
-
-	tam_lixo = cabecalho>>13;
-	tam_arvore = (cabecalho << 3);
+	tam_lixo =  byte >>5;
+	tam_arvore = byte << 11;
 	tam_arvore = tam_arvore >>3;
+	//0000 1000 0000 0000
+	fread(&byte, sizeof(byte), 1, compr);
+	tam_arvore = tam_arvore | ((byte << 8) >>8);
+
 	printf("lixo = %hu, tam_arvore = %hu", tam_lixo,  tam_arvore);
 
 	arvore = criar_arv(arvore, &indice, tam_arvore, compr);
