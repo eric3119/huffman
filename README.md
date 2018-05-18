@@ -2,4 +2,4 @@
 
 compilar
 
-gcc comprimir.c descomprimir.c func_arvore.c func_fila.c hash.c -c&&gcc comprimir.o descomprimir.o func_arvore.o func_fila.o hash.o main.c -o main
+gcc "implementacoes/comprimir.c" -c && gcc "implementacoes/descomprimir.c" -c && gcc "implementacoes/func_arvore.c" -c && gcc "implementacoes/func_fila.c" -c && gcc "implementacoes/dicionario.c" -c && gcc "comprimir.o"  "descomprimir.o"  "func_arvore.o"  "func_fila.o"  "dicionario.o"  main.c -o main
