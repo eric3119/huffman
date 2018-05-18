@@ -3,12 +3,12 @@
 #include <math.h>
 #include <string.h>
 
-#include "estruturas.h"
-#include "func_fila.h"
-#include "func_arvore.h"
-#include "hash.h"
-#include "comprimir.h"
-#include "descomprimir.h"
+#include "../cabecalhos/estruturas.h"
+#include "../cabecalhos/func_fila.h"
+#include "../cabecalhos/func_arvore.h"
+#include "../cabecalhos/dicionario.h"
+#include "../cabecalhos/comprimir.h"
+#include "../cabecalhos/descomprimir.h"
 
 int is_bit_i_set(unsigned char c, int i){
 	unsigned char mask = 1 << i;
@@ -53,20 +53,18 @@ void descomprimir(FILE* compr)
 	NO* arvore = NULL;
 
 	unsigned char byte;
-	unsigned short cabecalho;
 	unsigned short tam_lixo = 0;
 	unsigned short tam_arvore = 0;
 	unsigned short indice = 0;
 	
 	fread(&byte, sizeof(byte), 1, compr);
-	cabecalho = byte<<8;
-	fread(&byte, sizeof(byte), 1, compr);
-	cabecalho = cabecalho | (byte<<8)>>8;
-	printf("%hu\n", cabecalho);
-
-	tam_lixo = cabecalho>>13;
-	tam_arvore = (cabecalho << 3);
+	tam_lixo =  byte >>5;
+	tam_arvore = byte << 11;
 	tam_arvore = tam_arvore >>3;
+	//0000 1000 0000 0000
+	fread(&byte, sizeof(byte), 1, compr);
+	tam_arvore = tam_arvore | ((byte << 8) >>8);
+
 	printf("lixo = %hu, tam_arvore = %hu", tam_lixo,  tam_arvore);
 
 	arvore = criar_arv(arvore, &indice, tam_arvore, compr);
@@ -78,7 +76,7 @@ void descomprimir(FILE* compr)
 
 void descompressao(unsigned short tam_lixo, unsigned short tam_arvore, NO* arvore, FILE* arq_comp)
 {
-	int tam_arquivo = 0, bytes_lidos = 1, indice = 7;
+	int tam_arquivo_dep_arv = 0, bytes_lidos = 1, indice = 7;
 	unsigned char byte;
 
 	NO* raiz = arvore;
@@ -91,14 +89,14 @@ void descompressao(unsigned short tam_lixo, unsigned short tam_arvore, NO* arvor
 	while(!feof(arq_comp))
 	{
 		fread(&byte, sizeof(byte), 1, arq_comp);
-		tam_arquivo++;
+		tam_arquivo_dep_arv++;
 	}
-	tam_arquivo--;
+	tam_arquivo_dep_arv--;
 	fsetpos(arq_comp, &pos);
 
 	fread(&byte, sizeof(byte), 1, arq_comp);
 
-	while(bytes_lidos < tam_arquivo)
+	while(bytes_lidos < tam_arquivo_dep_arv)
 	{
 		if(is_bit_i_set(byte, indice))
 		{
