@@ -4,12 +4,12 @@
 #include <math.h>
 
 /*Modulos proprios*/
-#include "estruturas.h"
-#include "func_fila.h"
-#include "func_arvore.h"
-#include "hash.h"
-#include "comprimir.h"
-#include "descomprimir.h"
+#include "../cabecalhos/estruturas.h"
+#include "../cabecalhos/func_fila.h"
+#include "../cabecalhos/func_arvore.h"
+#include "../cabecalhos/dicionario.h"
+#include "../cabecalhos/comprimir.h"
+#include "../cabecalhos/descomprimir.h"
 
 FILA* criar_fila(){
 	FILA *novo = (FILA*) malloc(sizeof(FILA));
@@ -27,9 +27,9 @@ NO* dequeue(FILA *fila){
 
 	if(fila_vazia(fila)) return NULL;
 	
-	NO *aux = fila->cabeca;
+	NO *aux =(NO*) fila->cabeca;
 
-	fila->cabeca = fila->cabeca->proximo;
+	fila->cabeca =(void*) ((NO*)fila->cabeca)->proximo;
 	
 	aux->proximo = NULL;
 	
@@ -38,15 +38,15 @@ NO* dequeue(FILA *fila){
 
 void enqueue(FILA *fila, NO *n){
 
-	NO *atual = fila->cabeca,
+	NO *atual = (NO*)fila->cabeca,
 	     *ant = NULL;
 	while((atual!= NULL)&&(atual->freq < n->freq))	{
 		ant = atual;
 		atual = atual->proximo;
 	}
 	if(ant== NULL){
-		n->proximo = fila->cabeca;
-		fila->cabeca = n;
+		n->proximo = (NO*)fila->cabeca;
+		fila->cabeca = (NO*)n;
 	}else{
 		ant->proximo = n;
 		n->proximo = atual;
@@ -54,7 +54,7 @@ void enqueue(FILA *fila, NO *n){
 }
 
 void imprimir_fila(FILA *fila){
-	NO *aux = fila->cabeca;
+	NO *aux =(NO*) fila->cabeca;
 
 	while(aux){
 		if(aux->byte != '\n') printf("%c, %d\n", aux->byte, aux->freq);		

@@ -3,12 +3,12 @@
 #include <math.h>
 #include <string.h>
 
-#include "estruturas.h"
-#include "func_fila.h"
-#include "func_arvore.h"
-#include "hash.h"
-#include "comprimir.h"
-#include "descomprimir.h"
+#include "../cabecalhos/estruturas.h"
+#include "../cabecalhos/func_fila.h"
+#include "../cabecalhos/func_arvore.h"
+#include "../cabecalhos/dicionario.h"
+#include "../cabecalhos/comprimir.h"
+#include "../cabecalhos/descomprimir.h"
 
 unsigned char set_bit(unsigned char c, int i){
 
@@ -55,26 +55,27 @@ void pre_compressao(FILE* arquivo)
 		enqueue(fila, novo);		
 	}
 		
-	configuracoes* ht = criar_configuracoes();
+	dicionario* ht = criar_dicionario();
 
 	/*tam índica a quantidade maxima que uma string de configuracao pode assumir*/
-	int tam = altura(fila->cabeca);
+	int tam = altura((NO*)fila->cabeca);
 	char* byte = (char*)malloc((tam+1)*sizeof(char));
 		
-	buscar(fila->cabeca,byte,ht, 0);
+	buscar((NO*)fila->cabeca,byte,ht, 0);
 	lixo = calc_lixo(ht, tb_freq);
-	tam_arvore = calc_tam_arvore(fila->cabeca);
+	tam_arvore = calc_tam_arvore((NO*)fila->cabeca);
 
-	comprimir(ht, arquivo, lixo, tam_arvore, fila->cabeca);
+	comprimir(ht, arquivo, lixo, tam_arvore, (NO*)fila->cabeca);
 }
 
-void buscar(NO* arvore, char* byte, configuracoes* ht, int i){
+void buscar(NO* arvore, char* byte, dicionario* ht, int i){
 	if(!arvore) return;
 
 	if(arvore->esquerda == NULL && arvore->direita == NULL)
 	{
 		byte[i] = '\0';
-		put(ht, byte, arvore->byte);
+		put
+		(ht, byte, arvore->byte);
 	}
 	else
 	{
@@ -86,7 +87,7 @@ void buscar(NO* arvore, char* byte, configuracoes* ht, int i){
 	}
 }
 
-unsigned short calc_lixo(configuracoes* ht, int tb_freq[])
+unsigned short calc_lixo(dicionario* ht, int tb_freq[])
 {
 	int i;
 	unsigned short temp, lixo;
@@ -102,22 +103,6 @@ unsigned short calc_lixo(configuracoes* ht, int tb_freq[])
 	return lixo;
 }
 
-void converter_decimal_bin(int numero, int* indice, char *string)
-{
-	if(numero < 2)
-	{
-		string[*indice] = numero + '0';
-		*indice+= 1;
-	}
-	else
-	{
-		int resto = numero%2;
-		numero/=2;
-		converter_decimal_bin(numero, indice, string);
-		string[*indice] = resto + '0';
-		*indice+=1;
-	}
-}
 void cabecalho(unsigned short lixo, unsigned short tam_arvore, NO* arvore, FILE* tmp)
 {
 	unsigned char byte1;
@@ -130,7 +115,7 @@ void cabecalho(unsigned short lixo, unsigned short tam_arvore, NO* arvore, FILE*
 	fwrite(&byte2, sizeof(byte2), 1, tmp);
 	escrever_arvore(arvore, tmp);//Gravando a arvore no arquivo
 }
-void comprimir(configuracoes *ht, FILE* antigo, unsigned short lixo, unsigned short tam_arvore, NO* arvore){
+void comprimir(dicionario *ht, FILE* antigo, unsigned short lixo, unsigned short tam_arvore, NO* arvore){
 	/*Dessa funcao ele já faz o cabecalho*/
 	FILE *tmp = fopen("tmp", "wb");	
 	rewind(antigo);

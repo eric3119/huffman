@@ -4,12 +4,12 @@
 #include <math.h>
 
 /*Modulos proprios*/
-#include "estruturas.h"
-#include "func_fila.h"
-#include "func_arvore.h"
-#include "hash.h"
-#include "comprimir.h"
-#include "descomprimir.h"
+#include "cabecalhos/estruturas.h"
+#include "cabecalhos/func_fila.h"
+#include "cabecalhos/func_arvore.h"
+#include "cabecalhos/dicionario.h"
+#include "cabecalhos/comprimir.h"
+#include "cabecalhos/descomprimir.h"
 
 int main(int argc, char const *argv[]){
 
