@@ -30,24 +30,13 @@ NO* criar_arvore(NO *n1, NO *n2){
 	return novo;
 }
 
-void mostrar_arvore(NO *raiz){//printa na saída padrão
-	if(raiz != NULL){
-		if(raiz->caracter_controle == 1)
-			printf("\\%c", raiz->byte);
-		else
-			printf("%c", raiz->byte);
-		mostrar_arvore(raiz->esquerda);
-		mostrar_arvore(raiz->direita);
-	}
-}
-
 void escrever_arvore(NO *raiz, FILE* tmp){//printa no arquivo
 	if(raiz != NULL)
 	{
 		unsigned char c = raiz->byte;
 		if(raiz->caracter_controle == 1)
 		{
-			unsigned char d = 92;//'\'
+			unsigned char d = '\\';
 			fwrite(&d, sizeof(d), 1, tmp);
 			fwrite(&c, sizeof(c), 1, tmp);
 		}else
@@ -89,7 +78,7 @@ unsigned short calc_tam_arvore(NO* arvore){
 	//O tamanho da arvore eh 1 + o tamanho da arvore da esquerda + o tamanho da subarvore da direita
 	if((arvore->esquerda == NULL)  && (arvore->direita == NULL))
 	{
-		//o tamanho d euma folha eh 2, se a folha for '*' ou '\' , ou 1. 
+		//o tamanho de uma folha eh 2, se a folha for '*' ou '\' , ou 1. 
 		if(arvore->caracter_controle == 1)
 		{
 			return (unsigned short)2;

@@ -50,27 +50,26 @@ NO* criar_arv(NO* bt, unsigned short *i, unsigned short tam, FILE *compr){
 	return bt;
 }
 
-void descomprimir(FILE* compr)
+void pre_descompressao(FILE* compr)
 {
 	NO* arvore = NULL;
 
 	unsigned char byte;
-	unsigned short tam_lixo = 0;
+	unsigned short tam_lixo   = 0;
 	unsigned short tam_arvore = 0;
-	unsigned short indice = 0;
+	unsigned short indice     = 0;
 	
 	fread(&byte, sizeof(byte), 1, compr);
 
-	tam_lixo =  byte >>5;
+	tam_lixo   =  byte >>5;
 	tam_arvore = byte << 11;
 	tam_arvore = tam_arvore >>3;
-	//0000 1000 0000 0000
 
 	fread(&byte, sizeof(byte), 1, compr);
 
 	tam_arvore = tam_arvore | ((byte << 8) >>8);
 
-	arvore = criar_arv(arvore, &indice, tam_arvore, compr);
+	arvore     = criar_arv(arvore, &indice, tam_arvore, compr);
 
 	descompressao(tam_lixo, tam_arvore, arvore, compr);
 }
@@ -80,7 +79,7 @@ void descompressao(unsigned short tam_lixo, unsigned short tam_arvore, NO* arvor
 	int tam_arquivo_dep_arv = 0, bytes_lidos = 1, indice = 7;
 	unsigned char byte;
 
-	NO* raiz = arvore;
+	NO* raiz          = arvore;
 	FILE* arq_descomp = fopen("descomprimido", "wb");
 
 	fpos_t pos;
