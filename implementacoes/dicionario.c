@@ -4,15 +4,15 @@
 #include <math.h>
 
 /*Modulos proprios*/
-#include "estruturas.h"
-#include "func_fila.h"
-#include "func_arvore.h"
-#include "hash.h"
-#include "comprimir.h"
-#include "descomprimir.h"
+#include "../cabecalhos/estruturas.h"
+#include "../cabecalhos/func_fila.h"
+#include "../cabecalhos/func_arvore.h"
+#include "../cabecalhos/dicionario.h"
+#include "../cabecalhos/comprimir.h"
+#include "../cabecalhos/descomprimir.h"
 
-configuracoes* criar_configuracoes(){
-	configuracoes* novo =  (configuracoes*) malloc(sizeof(configuracoes));
+dicionario* criar_dicionario(){
+	dicionario* novo =  (dicionario*) malloc(sizeof(dicionario));
 	int i;
 	for( i = 0; i < 256; i++)
 	{
@@ -20,7 +20,7 @@ configuracoes* criar_configuracoes(){
 	}
 	return novo;
 }
-void put(configuracoes* ht, char* byte, unsigned char folha)
+void put(dicionario* ht, char* byte, unsigned char folha)
 {
 	int tamanho = strlen(byte);
 	binario* novo_n = (binario*)malloc(sizeof(binario));
@@ -31,10 +31,10 @@ void put(configuracoes* ht, char* byte, unsigned char folha)
 	ht->bytes[folha] = novo_n;
 }
 
-void escrever_configuracoes(configuracoes* ht)
+void escrever_dicionario(dicionario* ht)
 {
 	int i;
-	printf("configuracoes:\n");
+	printf("dicionario:\n");
 	for(i = 0; i < 256; i++)
 	{
 		if(ht->bytes[i]!= NULL)

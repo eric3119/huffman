@@ -4,7 +4,7 @@
 
 typedef struct binario binario;
 
-typedef struct configuracoes configuracoes;
+typedef struct dicionario dicionario;
 
 typedef struct NO NO;
 
@@ -14,7 +14,7 @@ struct binario{
 	char* byte;
 }; 
 
-struct configuracoes{
+struct dicionario{
 	binario* bytes[256];
 };
 
@@ -27,5 +27,5 @@ struct NO{
 };
 
 struct FILA{
-	NO *cabeca;
+	void *cabeca;
 };
