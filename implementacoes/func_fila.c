@@ -27,7 +27,7 @@ NO* dequeue(FILA *fila){
 
 	if(fila_vazia(fila)) return NULL;
 	
-	NO *aux =(NO*) fila->cabeca;
+	NO *aux 	 =(NO*) fila->cabeca;
 
 	fila->cabeca =(void*) ((NO*)fila->cabeca)->proximo;
 	
@@ -40,42 +40,38 @@ void enqueue(FILA *fila, NO *n){
 
 	NO *atual = (NO*)fila->cabeca,
 	     *ant = NULL;
+
 	while((atual!= NULL)&&(atual->freq < n->freq))	{
-		ant = atual;
+		ant   = atual;
 		atual = atual->proximo;
 	}
+
 	if(ant== NULL){
-		n->proximo = (NO*)fila->cabeca;
+		n->proximo   = (NO*)fila->cabeca;
 		fila->cabeca = (NO*)n;
 	}else{
 		ant->proximo = n;
-		n->proximo = atual;
-	}
-}
-
-void imprimir_fila(FILA *fila){
-	NO *aux =(NO*) fila->cabeca;
-
-	while(aux){
-		if(aux->byte != '\n') printf("%c, %d\n", aux->byte, aux->freq);		
-		else printf("\\n, %d\n", aux->freq);
-		aux = aux->proximo;
+		n->proximo   = atual;
 	}
 }
 
 NO* criar_no(int freq, unsigned char c){
 	NO *novo = (NO*) malloc(sizeof(NO));
 
-		novo->byte = c;
-		novo->freq = freq;
-		novo->esquerda = novo->direita = novo->proximo = NULL;
-		if((c == 42) || (c == 92))
-		{
-			novo->caracter_controle = 1;
-		}
-		else
-		{
-			novo->caracter_controle = 0;
-		}
+	novo->byte = c;
+
+	novo->freq = freq;
+
+	novo->esquerda = novo->direita = novo->proximo = NULL;
+
+	if((c == 42) || (c == 92))
+	{
+		novo->caracter_controle = 1;
+	}
+
+	else
+	{
+		novo->caracter_controle = 0;
+	}
 	return novo;
 }

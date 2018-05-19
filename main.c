@@ -36,7 +36,7 @@ int main(int argc, char const *argv[]){
 			puts("erro ao abrir arquivo\n");
 			return -1;
 		}
-		descomprimir(arquivo);
+		pre_descompressao(arquivo);
 	}
 	else
 	{
