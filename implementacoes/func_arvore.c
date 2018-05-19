@@ -71,7 +71,7 @@ int altura(NO* bt){
 	}
 	int altura_esquerda, altura_direita;
 	altura_esquerda = altura(bt->esquerda);
-	altura_direita= altura(bt->direita);
+	altura_direita  = altura(bt->direita);
 
 	if(altura_esquerda > altura_direita)
 	{
@@ -86,7 +86,7 @@ int altura(NO* bt){
 unsigned short calc_tam_arvore(NO* arvore){
 
 	if(!arvore) return 0;
-	//O tamanho da arvore eh 1 + o tamanho da arvore da esuqerda + o tamanho da subarvore da direita
+	//O tamanho da arvore eh 1 + o tamanho da arvore da esquerda + o tamanho da subarvore da direita
 	if((arvore->esquerda == NULL)  && (arvore->direita == NULL))
 	{
 		//o tamanho d euma folha eh 2, se a folha for '*' ou '\' , ou 1. 

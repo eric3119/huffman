@@ -27,7 +27,9 @@ NO* criar_no_arv(unsigned char c){
 
 NO* criar_arv(NO* bt, unsigned short *i, unsigned short tam, FILE *compr){
 	if(*i == tam) return bt;
+
 	(*i)++;
+
 	unsigned char item;
 	
 	fread(&item, sizeof(item), 1, compr);
@@ -58,18 +60,17 @@ void descomprimir(FILE* compr)
 	unsigned short indice = 0;
 	
 	fread(&byte, sizeof(byte), 1, compr);
+
 	tam_lixo =  byte >>5;
 	tam_arvore = byte << 11;
 	tam_arvore = tam_arvore >>3;
 	//0000 1000 0000 0000
+
 	fread(&byte, sizeof(byte), 1, compr);
+
 	tam_arvore = tam_arvore | ((byte << 8) >>8);
 
-	printf("lixo = %hu, tam_arvore = %hu", tam_lixo,  tam_arvore);
-
 	arvore = criar_arv(arvore, &indice, tam_arvore, compr);
-
-	//mostrar_arvore(arvore);
 
 	descompressao(tam_lixo, tam_arvore, arvore, compr);
 }
@@ -91,6 +92,7 @@ void descompressao(unsigned short tam_lixo, unsigned short tam_arvore, NO* arvor
 		fread(&byte, sizeof(byte), 1, arq_comp);
 		tam_arquivo_dep_arv++;
 	}
+	
 	tam_arquivo_dep_arv--;
 	fsetpos(arq_comp, &pos);
 
