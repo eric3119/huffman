@@ -8,4 +8,4 @@ CUnit
 
 sudo apt-get install libcunit1 libcunit1-doc libcunit1-dev
 
-gcc "../implementacoes/func_arvore.c" -c && gcc "../implementacoes/func_fila.c" -c && gcc "../implementacoes/dicionario.c" -c && gcc "func_arvore.o" "func_fila.o" "dicionario.o" cunit.c -o cunit
+gcc "../implementacoes/func_arvore.c" -c && gcc "../implementacoes/func_fila.c" -c && gcc "../implementacoes/dicionario.c" -c && gcc "../implementacoes/comprimir.c" -c && gcc "func_arvore.o" "func_fila.o" "dicionario.o" "comprimir.o" cunit.c -o cunit -lcunit
