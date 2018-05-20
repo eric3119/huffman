@@ -45,7 +45,6 @@ void pre_compressao(FILE* arquivo)
 			enqueue(fila, novo);
 		}
 	}
-	
 
 	while(1){
 		NO *n1   = dequeue(fila),
@@ -104,7 +103,7 @@ unsigned short calc_lixo(dicionario* ht, int tb_freq[])
 	{
 		if(tb_freq[i])
 		{
-			temp += ((unsigned short)(strlen(ht->bytes[i]->byte) * tb_freq[i]));
+			temp += ((unsigned short)(strlen(((binario*)(ht->bytes[i]))->byte) * tb_freq[i]));
 		}
 	}
 	lixo = (unsigned short) (8 - temp%8)%8;
@@ -147,11 +146,11 @@ void comprimir(dicionario *ht, FILE* antigo, unsigned short lixo, unsigned short
 	fread(&c, sizeof(c), 1, antigo);
 
 	if(!feof(antigo))
-		tamanho = strlen(ht->bytes[c]->byte);
+		tamanho = strlen(((binario*)(ht->bytes[c]))->byte);
 		
 	while(1){
 		for(; j<tamanho && i>=0; j++){
-			if(ht->bytes[c]->byte[j]=='1'){
+			if(((binario*)(ht->bytes[c]))->byte[j] == '1'){
 				d = set_bit(d, i);				
 			}
 			i--;
@@ -165,7 +164,7 @@ void comprimir(dicionario *ht, FILE* antigo, unsigned short lixo, unsigned short
 
 		if(j >= tamanho){
 			fread(&c, sizeof(c), 1, antigo);
-			tamanho = strlen(ht->bytes[c]->byte);
+			tamanho = strlen(((binario*)(ht->bytes[c]))->byte);
 			j = 0;
 
 		}

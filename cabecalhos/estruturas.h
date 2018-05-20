@@ -23,7 +23,7 @@ struct binario{
 
 //Definicao da estrutura dicionario
 struct dicionario{
-	binario* bytes[256];
+	void* bytes[256];
 };
 
 //Definicao da estrutura NO

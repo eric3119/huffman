@@ -33,6 +33,6 @@ void put(dicionario* ht, char* byte, unsigned char folha)
 
 	strcpy(novo, byte);
 
-	novo_n->byte = novo;
+	novo_n->byte = (char*)novo;
 	ht->bytes[folha] = novo_n;
 }
