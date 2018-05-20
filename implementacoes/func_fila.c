@@ -43,15 +43,15 @@ void enqueue(FILA *fila, NO *n){
 
 	while((atual!= NULL)&&(atual->freq < n->freq))	{
 		ant   = atual;
-		atual = atual->proximo;
+		atual = (NO*)atual->proximo;
 	}
 
 	if(ant== NULL){
 		n->proximo   = (NO*)fila->cabeca;
 		fila->cabeca = (NO*)n;
 	}else{
-		ant->proximo = n;
-		n->proximo   = atual;
+		ant->proximo = (NO*)n;
+		n->proximo   = (NO*)atual;
 	}
 }
 
