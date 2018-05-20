@@ -31,7 +31,7 @@ struct NO{
 	unsigned char byte;
 	int freq;
 	short caracter_controle;
-	NO *proximo;
+	void *proximo;
 	NO *esquerda, *direita;
 };
 
