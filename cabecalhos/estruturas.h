@@ -23,7 +23,7 @@ struct binario{
 
 //Definicao da estrutura dicionario
 struct dicionario{
-	binario* bytes[256];
+	void* bytes[256];
 };
 
 //Definicao da estrutura NO
@@ -31,7 +31,7 @@ struct NO{
 	unsigned char byte;
 	int freq;
 	short caracter_controle;
-	NO *proximo;
+	void *proximo;
 	NO *esquerda, *direita;
 };
 
