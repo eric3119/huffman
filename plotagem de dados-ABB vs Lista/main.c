@@ -24,7 +24,7 @@ int main()
 
 	FILE* arq = fopen("banco.csv", "w");
 
-	fprintf(arq, "numero;lista;abb\n");
+	fprintf(arq, "numero_sorteado;lista;abb\n");
 	long long int comparacoes1,comparacoes2, i;
 	long long int item;
 	srand((unsigned)time(NULL));
@@ -60,7 +60,7 @@ hash_table* criar_hash_table(long long int tamanho)
 	hash_table* ht = (hash_table*)malloc(sizeof(hash_table));
 	ht->tamanho    = tamanho;
 	ht->comparado  = (short*)malloc(tamanho*sizeof(short));
-	ht->table 	   = (long long int*)malloc(tamanho*sizeof(long long int*));
+	ht->table 	   = (long long int*)malloc(tamanho*sizeof(long long int));
 	int i;
 
 	for(i = 0; i < tamanho; ++i)
