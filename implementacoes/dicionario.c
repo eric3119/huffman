@@ -23,7 +23,7 @@ dicionario* criar_dicionario(){
 
 	return novo;
 }
-void put(dicionario* ht, char* byte, unsigned char folha)
+void inserir(dicionario* ht, char* byte, unsigned char folha)
 {
 	int tamanho = strlen(byte);
 

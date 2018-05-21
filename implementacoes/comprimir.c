@@ -66,7 +66,7 @@ void pre_compressao(FILE* arquivo)
 
 	byte = (char*)malloc((tam+1)*sizeof(char));
 		
-	buscar((NO*)fila->cabeca,byte,ht, 0);
+	codificar((NO*)fila->cabeca,byte,ht, 0);
 
 	lixo       = calc_lixo(ht, tb_freq);
 
@@ -75,21 +75,21 @@ void pre_compressao(FILE* arquivo)
 	comprimir(ht, arquivo, lixo, tam_arvore, (NO*)fila->cabeca);
 }
 
-void buscar(NO* arvore, char* byte, dicionario* ht, int i){
+void codificar(NO* arvore, char* byte, dicionario* ht, int i){
 	if(!arvore) return;
 
 	if(arvore->esquerda == NULL && arvore->direita == NULL)
 	{
 		byte[i] = '\0';
-		put(ht, byte, arvore->byte);
+		inserir(ht, byte, arvore->byte);
 	}
 	else
 	{
 		byte[i] = '0';
-		buscar(arvore->esquerda, byte, ht, i+1);
+		codificar(arvore->esquerda, byte, ht, i+1);
 
 		byte[i] = '1';
-		buscar(arvore->direita, byte, ht, i+1);
+		codificar(arvore->direita, byte, ht, i+1);
 		
 	}
 }
@@ -139,7 +139,7 @@ void comprimir(dicionario *ht, FILE* antigo, unsigned short lixo, unsigned short
 	/*Compressao*/
 	
 	if(!tmp || !antigo){
-		puts("erro arquivo");
+		printf("erro arquivo");
 		return ;
 	}
 
