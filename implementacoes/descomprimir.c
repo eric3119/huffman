@@ -76,7 +76,7 @@ void pre_descompressao(FILE* compr)
 
 void descompressao(unsigned short tam_lixo, unsigned short tam_arvore, NO* arvore, FILE* arq_comp)
 {
-	int tam_arquivo_dep_arv = 0, bytes_lidos = 1, indice = 7;
+	int tam_arquivo = 0, bytes_lidos = 1, indice = 7;
 	unsigned char byte;
 
 	NO* raiz          = arvore;
@@ -89,15 +89,15 @@ void descompressao(unsigned short tam_lixo, unsigned short tam_arvore, NO* arvor
 	while(!feof(arq_comp))
 	{
 		fread(&byte, sizeof(byte), 1, arq_comp);
-		tam_arquivo_dep_arv++;
+		tam_arquivo++;
 	}
 	
-	tam_arquivo_dep_arv--;
+	tam_arquivo--;
 	fsetpos(arq_comp, &pos);
 
 	fread(&byte, sizeof(byte), 1, arq_comp);
 
-	while(bytes_lidos < tam_arquivo_dep_arv)
+	while(bytes_lidos < tam_arquivo)
 	{
 		if(is_bit_i_set(byte, indice))
 		{
