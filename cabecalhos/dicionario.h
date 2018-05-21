@@ -14,5 +14,5 @@ dicionario* criar_dicionario();
 *char* byte eh o byte a ser colocado no dicionario
 *unsigned char folha eh o indice no dicionario que o byte vai ser colocado
 */
-void put(dicionario* ht, char* byte, unsigned char folha);
+void inserir(dicionario* ht, char* byte, unsigned char folha);
 

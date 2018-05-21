@@ -24,7 +24,7 @@ void pre_compressao(FILE* arquivo);
 *dicionario* ht e o dicionario que se deseja guardar as configuracoes
 *int i deve ser inicializado com 0
 */
-void buscar(NO* arvore, char* byte, dicionario* ht, int i);
+void codificar(NO* arvore, char* byte, dicionario* ht, int i);
 
 /*
 *Calcula o tamanho do lixo que vai restar apos a comressao do arquivo
