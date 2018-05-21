@@ -1,4 +1,4 @@
-all: main
+all: main clean
  
 main: main.o comprimir.o descomprimir.o func_arvore.o func_fila.o dicionario.o
 	gcc main.o comprimir.o descomprimir.o func_arvore.o func_fila.o dicionario.o -o main
