@@ -67,7 +67,7 @@ void pre_descompressao(FILE* compr)
 
 	fread(&byte, sizeof(byte), 1, compr);
 
-	tam_arvore = tam_arvore | ((byte << 8) >>8);
+	tam_arvore = tam_arvore | byte;
 
 	arvore     = criar_arv(arvore, &indice, tam_arvore, compr);
 

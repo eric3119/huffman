@@ -116,8 +116,8 @@ void cabecalho(unsigned short lixo, unsigned short tam_arvore, NO* arvore, FILE*
 	unsigned char byte2;
 
 	byte1 = lixo<<5;
-	byte1 = byte1|(((tam_arvore)<<3)>>8);
-	byte2 = (tam_arvore<<8)>>8;
+	byte1 = byte1|((tam_arvore)>>8);
+	byte2 = tam_arvore;
 
 	fwrite(&byte1, sizeof(byte1), 1, tmp);
 	fwrite(&byte2, sizeof(byte2), 1, tmp);
